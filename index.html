@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width ,initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Disk-Scheduling-Algorithms-Calculator</title>
+    <meta name="description" content="Learn,Calculate and visulaize the Disk Scheduling Algorithms online .">
+    <meta name="keywords"
+        content="Disk scheduling online calculator,First Come First Serve,FCFS,Shortest Seek Time First,SSTF,SCAN,CSCAN,LOOK,CLOOK,Seek Time,Rotational Latency,Transfer Time,Disk Access Time,Disk Response Time,FCFS calculator,SSTF calculator,SCAN calculator,CSCAN calculator,LOOK calculator,CLOOK calculator,disk calculator">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .secA {
+            background-image: url("disk1.jpg");
+            /* background-image: url("https://images.unsplash.com/photo-1603048588665-791ca8aea617?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGRpc2t8ZW58MHx8MHx8&auto=format&fit=crop&w=600&q=60"); */
+            background-size: cover;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: white;
+        }
+
+        .brand-title {
+            font-size: 1.5rem;
+            margin: .5rem;
+        }
+
+        .navbar-links {
+            height: 100%;
+        }
+
+        .navbar-links ul {
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-links li {
+            list-style: none;
+        }
+
+        .navbar-links li a {
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 1rem;
+        }
+
+        .navbar-links li:hover {
+            background-color: #555;
+        }
+
+        .toggle-button {
+            position: absolute;
+            top: .75rem;
+            right: 1rem;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+        }
+
+        .toggle-button .bar {
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 425px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.5rem;
+            }
+
+            .toggle-button {
+                display: flex;
+            }
+
+            .navbar-links {
+                display: none;
+                width: 100%;
+            }
+
+            .navbar-links ul {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .navbar-links ul li {
+                text-align: center;
+            }
+
+            .navbar-links ul li a {
+                padding: .5rem 1rem;
+            }
+
+            .navbar-links.active {
+                display: flex;
+            }
+        }
+
+
+        #knowmore-button-box #btn {
+            border-radius: 0.5rem;
+        }
+
+        #knowmore-button-box #btn:hover {
+            background-color: silver;
+            border: none;
+        }
+
+        #div1 ul li a {
+            text-decoration: none;
+            color: white;
+            margin: 3rem 3rem;
+        }
+
+
+        #div2 {
+            text-align: center;
+        }
+
+        #div2 p {
+            margin: 2rem 6rem;
+        }
+
+        .knowmore-container {
+            display: block;
+            padding: 0.75rem;
+        }
+
+        #knowmore-button-box #btn {
+            width: 8rem;
+            padding: 5px 3px;
+            cursor: pointer;
+            margin: 2rem 0rem 2rem 10rem;
+        }
+
+        #knowmore-content-box {
+            width: 25rem;
+            margin-top: 2rem;
+            margin-left: 2rem;
+            text-align: justify;
+            border: 1px solid white;
+            padding: 0.5rem;
+            border-radius: 1rem;
+            display: none;
+        }
+
+        .secB {
+            background-color: #E4EBE0;
+            padding: 3rem;
+        }
+
+        .secB p {
+            border: 0.25px thin black;
+            border-radius: 2rem;
+            box-shadow: 0 0 11px rgba(33, 33, 33, .4);
+            padding: 2rem;
+        }
+
+        .secB p:hover {
+            box-shadow: 0 0 30px rgba(33, 33, 33, .5);
+        }
+
+        .secC {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr 1fr 1fr;
+            background-color: #D4F1F4;
+        }
+
+        .child {
+            height: 25rem;
+            border: 0.25px thin black;
+            border-radius: 2rem;
+            padding: 1rem;
+            margin: 2rem;
+            text-align: center;
+            box-shadow: 0 0 11px rgba(33, 33, 33, .4);
+            overflow-y: auto;
+        }
+
+        .child:hover {
+            box-shadow: 0 0 30px rgba(33, 33, 33, .4);
+        }
+
+        .child h3 a {
+            text-decoration: none;
+            color: rgba(0, 0, 255, 0.822);
+        }
+
+        footer {
+            box-sizing: border-box;
+            text-align: center;
+            background-color: #424242;
+            color: white;
+            padding: 2rem;
+        }
+
+        @media screen and (max-width:425px) {
+            html {
+                font-size: 60%;
+            }
+
+            #btn {
+                display: none;
+            }
+
+            #div2 p {
+                line-height: 2rem;
+            }
+
+            .secA {
+                background-image: linear-gradient(rgba(1, 2, 10, 0.7), rgba(2, 10, 44, 0.7)), url("disk1.jpg");
+                color: white;
+            }
+
+            .secC {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (min-width:425px) and (max-width:768px) {
+            html {
+                font-size: 80%;
+            }
+
+            #btn {
+                display: none;
+            }
+
+            #div2 p {
+                line-height: 2rem;
+            }
+
+            .secA {
+                background-image: linear-gradient(rgba(1, 2, 10, 0.7), rgba(2, 10, 44, 0.7)), url("disk1.jpg");
+                color: white;
+            }
+
+            .secC {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+    <script>
+        function knowmoredisplay() {
+            var x = document.getElementById("knowmore-content-box");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            }
+            else {
+                x.style.display = "none";
+            }
+        } q
+    </script>
+</head>
+
+<body>
+    <section class="secA">
+        <nav class="navbar">
+            <div class="brand-title">DiskScheduling</div>
+            <a href="#" class="toggle-button">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </a>
+            <div class="navbar-links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="algo.html" target="blank">Simulate</a></li>
+                    <li><a href="#foot">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+        <div id="div2">
+            <p>Disk scheduling is done by operating systems to schedule I/O requests arriving for the disk. Disk
+                scheduling is also known as I/O scheduling.
+                Disk scheduling is important because:<br>
+                Multiple I/O requests may arrive by different processes and only one I/O request can be served at a time
+                by the disk controller. Thus other I/O
+                requests need to wait in the waiting queue and need to be scheduled.
+                Two or more request may be far from each other so can result in greater disk arm movement.
+                Hard drives are one of the slowest parts of the computer system and thus need to be accessed in an
+                efficient manner.
+                There are many Disk Scheduling Algorithms.
+            </p>
+        </div>
+        <div class="knowmore-container">
+            <div id="knowmore-button-box">
+                <button id="btn" onclick="knowmoredisplay()">Know More</button>
+            </div>
+            <div id="knowmore-content-box">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident odit, nobis unde nulla corporis
+                    animi, culpa quidem natus suscipit enim quisquam ipsam atque eos placeat quia eveniet obcaecati?<br>
+                    Consequuntur, perspiciatis!
+                    Nihil inventore, eaque vero quas obcaecati ex qui fuga, temporibus iure voluptas nulla, et placeat
+                    repellendus! Neque corporis molestiae accusantium facilis, nam sunt, saepe necessitatibus adipisci
+                    animi maxime commodi cupiditate?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut
+                    ducimus reprehenderit laborum ipsum quae explicabo soluta quia? Unde delectus aperiam commodi
+                    necessitatibus soluta dolore reiciendis totam assumenda, eligendi incidunt neque!<br>Lorem ipsum
+                    dolor, sit amet consectetur adipisicing elit. Soluta voluptate quod ad placeat eos voluptatem,
+                    tempora totam ipsa corporis blanditiis.</p>
+            </div>
+        </div>
+    </section>
+    <section class="secB">
+        <h4>Terms used in Disk Scheduling : </h4><br>
+        <p><b>Seek Time:</b>Seek time is the time taken to locate the disk arm to a specified track <br> <br>
+            <b>Rotational Latency:</b> Rotational Latency is the time taken by the desired sector of disk to rotate into
+            a position so that it can access the read/write heads. So the disk scheduling algorithm that gives minimum
+            rotational latency is better.<br><br>
+            <b>Transfer Time:</b> Transfer time is the time to transfer the data. It depends on the rotating speed of
+            the disk and number of bytes to be transferred.<br><br>
+            <b>Disk Access Time:</b> <br>
+            Disk Access Time = Seek Time + Rotational Latency + Transfer Time
+            <br><br>
+            <b>Disk Response Time:</b> Response Time is the average of time spent by a request waiting to perform its
+            I/O operation. Average Response time is the response time of the all requests. Variance Response Time is
+            measure of how individual request are serviced with respect to average response time. So the disk scheduling
+            algorithm that gives minimum variance response time is better.<br>
+        </p>
+    </section>
+    <section class="secC">
+        <div class="child" id="child1">
+            <h3><a href="algo.html">FCFS</a></h3><br><br>
+            <p>FCFS is the simplest of all the Disk Scheduling Algorithms. In FCFS, the requests are addressed in the
+                order they arrive in the disk queue.<br><br>
+                <b>Advantages of FCFS :</b><br>
+                1.There is no indefinite delay.<br>
+                2.There is no starvation ,because each request gets a fair chance.<br><br>
+                <b>Disadvantages of FCFS :</b><br>
+                1.FCFS scheduling is not offered as the best service.<br>
+                2.Scheduling disk time is not optimized.<br>
+            </p>
+        </div>
+        <div class="child" id="child2">
+            <h3><a href="algo.html">SSTF</a></h3><br><br>
+            <p>In SSTF (Shortest Seek Time First), requests having shortest seek time are executed first. So, the seek
+                time of every request is calculated in advance in the queue and then they are scheduled according to
+                their calculated seek time.<br><br>
+                <b> Advantages of SSTF :</b><br>
+                1.The average response time is decreased.<br>
+                2.Increased throughput.<br><br>
+                <b>Disadvantages of SSTF :</b><br>
+                1.There may be a chance of starvation.<br>
+                2.SSTF is not an optimal algorithm.
+            </p>
+        </div>
+        <div class="child" id="child3">
+            <h3><a href="algo.html">SCAN</a></h3><br><br>
+            <p>In SCAN algorithm the disk arm moves into a particular direction and services the requests coming in its
+                path and after reaching the end of disk, it reverses its direction and again services the request
+                arriving in its path. So, this algorithm works as an elevator and hence also known aselevator
+                algorithm.<br><br>
+                <b> Advantages of SCAN :</b><br>
+                1.There is a low variance of response time.<br>
+                2.Throughput is high.<br>
+                3.Response time is average and No starvation.<br><br>
+                <b>Disadvantages of SCAN :</b><br>
+                1.Long waiting time.<br>
+                2.We have to move the disk head to the end of the disk even when we don’t have any request to service.
+            </p>
+        </div>
+        <div class="child" id="child4">
+            <h3><a href="algo.html">CSCAN</a></h3><br><br>
+            <p> In SCAN algorithm, the disk arm again scans the path that has been scanned, after reversing its
+                direction. So, it may be possible that too many requests are waiting at the other end or there may be
+                zero or few requests pending at the scanned area.<br><br>
+                <b>Advantages of CSCAN :</b><br>
+                1.C-SCAN offers better uniform waiting time.<br>
+                2.It offers a better response time.<br><br>
+                <b>Disadvantages of CSCAN :</b><br>
+                1.There are more seek movements as compared to SCAN disk scheduling.<br>
+                2.We have to move the disk head to the end of the disk even when we don’t have any request to
+                service.<br>
+            </p>
+        </div>
+        <div class="child" id="child5">
+            <h3><a href="algo.html">LOOK</a></h3><br><br>
+            <p> It is similar to the SCAN disk scheduling algorithm except for the difference that the disk arm in spite
+                of going to the end of the disk goes only to the last request to be serviced in front of the head and
+                then reverses its direction from there only.<br><br>
+                <b>Advantages of LOOK :</b><br>
+                1.There is no starvation.<br>
+                2.It offers low variance in waiting time and response time.<br><br>
+                <b>Disadvantages of LOOK :</b><br>
+                1.There is more overhead to find the end request.<br>
+                2.Look disk scheduling is not used in case of more load.<br>
+            </p>
+        </div>
+        <div class="child" id="child6">
+            <h3><a href="algo.html">CLOOK</a></h3><br><br>
+            <p> As LOOK is similar to SCAN algorithm, in similar way, CLOOK is similar to CSCAN disk scheduling
+                algorithm. In CLOOK, the disk arm in spite of going to the end goes only to the last request to be
+                serviced in front of the head and then from there goes to the other end’s last request.<br><br>
+                <b>Advantages of CLOOK :</b><br>
+                1.There is no starvation.<br>
+                2.The performance of the C-Look scheduling is better than Look disk scheduling.<br>
+                3.It offers low variance in waiting time and response time.<br><br>
+                <b>Disadvantages of CLOOK :</b><br>
+                1.There is more overhead in calculations.<br>
+            </p>
+        </div>
+    </section>
+    <footer id="foot">
+        <h4>Reach Us at <a href="mailto:schedulethedisk@gmail.com"
+                style="text-decoration: none;color: rgb(226, 191, 191);"><i>schedulethedisk@gmail.com</i></a></h4>
+        <p>© All Rights reserved</p>
+
+    </footer>
+</body>
+
+</html>

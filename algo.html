@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algorithms-Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+
+    }
+
+    #heading {
+      padding: 2rem;
+      text-align: center;
+      background-color: #424242;
+      color: white;
+    }
+
+    .dropdown-content {
+      background-color: #D4F1F4;
+    }
+
+    .accordion-item {
+      margin: 0 2rem 0 2rem;
+      border-radius: 2rem;
+    }
+
+    .left-block {
+      border: 1px solid #167D7F;
+      padding: 2rem;
+      border-radius: 1rem;
+      margin: 2rem;
+    }
+
+
+    .calculator {
+      margin-top: 1.5rem;
+      background-color: #D4F1F4;
+    }
+
+    #plot-button {
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+    }
+
+    footer {
+      box-sizing: border-box;
+      text-align: center;
+      background-color: #424242;
+      color: white;
+      padding: 1rem;
+    }
+
+    @media screen and (max-width:768px) {
+      .calculator {
+        grid-template-areas: "lb"
+          "rb";
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <section class="head">
+    <div id="heading">
+      <h1>Different Disc Scheduling Algorithms</h1>
+    </div>
+  </section>
+  <section>
+    <div class="accordion accordion-flush dropdown-content" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <b>First Come First Serve (FCFS)</b>
+          </button>
+        </h2>
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">Let’s consider a disk consisting of 100 concentric tracks (0-99) and let’s assume
+            the Operating System needs
+            to access sectors on the following tracks: [43,52,24,65,70,48,16,61]. And let’s assume the head is, to start
+            with at track 20.<br><br>
+            With a First Come First Served scheduling algorithms the tracks will be accessed in the order they were
+            requested. So the read/write head will be moving from its current position to track 43, then track 52 then
+            track 24 and so on…
+            <br><br>
+            Looking at the above pattern we can estimate the seek time of this approach:<br><br>
+            <i><b>Seek Time = (Number of tracks crossed) x (Time to cross one track)</b></i><br><br>
+            Number of tracks crossed = |20-43| + |43-52| + |52-24| + |24-65| + |65-70| + |70-48| + |48-16| + |16-61| =
+            205<br><br>
+            Seek Time = 205 x (Time to cross one track)
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <b>Shortest Seek Time First (SSTF)</b>
+          </button>
+        </h2>
+        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">With the Shortest Seek Time First algorithm, we once again do not necessary
+            process the requests in order
+            they arrived. Instead we all always process the request which is the closest to the current position (track
+            number) of the head.<br><br>
+            In this case, using the same example as above: Starting Position: Track 20, list of tracks to access
+            [43,52,24,65,70,48,16,61] we can calculate the number of tracks crossed as follows:<br><br>
+            Number of tracks crossed = |20-24| + |24-16| + |16-70| = 66<br><br>
+            Seek Time = 66 x (Time to cross one track)<br><br>
+            On average this algorithm will reduce the overall seek time (compared to all the other 3 algorithms we
+            investigated in this blog post).</div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+            <b>SCAN</b>
+          </button>
+        </h2>
+        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+          data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">With a SCAN Disk Scheduling algorithm the disk arm will not access the tracks in
+            the order they were
+            requested. Instead it will move in one direction and service the requests coming in its path. After reaching
+            the end of disk (e.g. track 99), it will reverse its direction and again services the request arriving in
+            its path. Due to the movement of the arm going all the way up and down the number of tracks, the algorithm
+            is also known as elevator algorithm. The aim of this approach is to reduce the average seek time when
+            accessing a list of sectors.<br><br>
+            In this case, using the same example as above: Starting Position: Track 20, list of tracks to access
+            [43,52,24,65,70,48,16,61] we can calculate the number of tracks crossed as follows:<br><br>
+            Number of tracks crossed = |20-99| + |99-16| = 162<br><br>
+            <i><b>Seek Time = 162 x (Time to cross one track)</b></i><br><br>
+            On average this algorithm will reduce the overall seek time (compared to a FCFS Disk Scheduling algorithm.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <h3 id="direct" style="margin-left:2rem;"><br>Play with any Algorithm :)</h3>
+
+
+  <section class="calculator">
+    <div class="main">
+      <div class="left-block">
+        <form name="myForm">
+          <fieldset>
+            <div class="row2">
+              <div class="form-group">
+                <label>Algorithm</label>
+                <select class="form-control" id="algorithm">
+                  <option value="fcfs">FCFS</option>
+                  <option value="sstf">SSTF</option>
+                  <option value="scan">SCAN</option>
+                  <option value="c-scan">C-SCAN</option>
+                  <option value="look">LOOK</option>
+                  <option value="c-look">C-LOOK</option>
+                </select>
+              </div>
+            </div>
+            <div class="row2">
+              <div class="form-group">
+                <label class="col-form-label">Order of requests</label>
+                <input type="text" class="form-control" id="sequence" placeholder="eg.82 170 43 140 24 16 190">
+              </div>
+            </div>
+            <div class="row2">
+              <div class="form-group">
+                <label class="col-form-label">Head Position</label>
+                <input class="form-control" type="text" id="head-position" name="intial" placeholder="eg. 50">
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <button type="submit" id="plot-button" class="btn btn-primary"
+          onclick="calculationgraph(document.getElementById('algorithm').value, document.getElementById('sequence').value, document.getElementById('head-position').value)">
+          <a href="#plot-graph" style="color: white; text-decoration: none;">Plot Graph</a></button>
+      </div>
+      <div id="plot-graph" class="container2">
+        <div id="alg-name"></div>
+        <div id="graph_area" style="margin: 2rem;"></div>
+        <div id="cal-seek" style="margin: 2rem;"></div>
+      </div>
+    </div>
+  </section>
+  <div id="areaA" style="width:90%;height:250px;"></div>
+  <footer id="foot">
+    <h4>Reach Us at <a href="mailto:schedulethedisk@gmail.com"
+        style="text-decoration: none;color: rgb(226, 191, 191);"><i>schedulethedisk@gmail.com</i></a></h4>
+    <p>© All Rights reserved</p>
+  </footer>
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</body>
+
+</html>
